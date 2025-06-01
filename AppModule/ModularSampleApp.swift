@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import UserListModule
 
 @main
 struct ModularSampleApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            let viewModel = UserListViewModel()
+            UserListScreen(viewModel: viewModel)
         }
     }
 }

@@ -1,0 +1,38 @@
+//
+//  UserListService.swift
+//  UserListModule
+//
+//  Created by Gaurang Lathiya on 01/06/25.
+//
+
+import Foundation
+import CoreModule
+import NetworkModule
+
+public protocol UserListProtocol: Sendable {
+    func fetchUsers() async throws -> [User]
+}
+
+public struct UserListService: UserListProtocol {
+    
+    let apiClient: APIClientProtocol
+    
+    public init(apiClient: APIClientProtocol) {
+        self.apiClient = apiClient
+    }
+    
+    @MainActor
+    public func fetchUsers() async throws -> [User] {
+        guard let apiURL = URL(string: AppConstants.apiBaseURL) else {
+            throw URLError(.badURL)
+        }
+        
+        var urlRequest = URLRequest(url: apiURL)
+        urlRequest.httpMethod = "GET"
+        urlRequest.httpBody = nil
+        urlRequest.allHTTPHeaderFields = ["Content-Type": "application/json"]
+        
+        return try await apiClient.request(urlRequest)
+    }
+        
+}
