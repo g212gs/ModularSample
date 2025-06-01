@@ -5,9 +5,8 @@
 //  Created by Gaurang Lathiya on 01/06/25.
 //
 
-
-import SwiftUI
 import CoreModule
+import SwiftUI
 
 enum InfoType {
     case phone
@@ -20,14 +19,14 @@ struct UserDetailRowView: View {
     let label: String
     let value: String
     let type: InfoType
-    
+
     init(icon: String, label: String, value: String, type: InfoType = .normal) {
         self.icon = icon
         self.label = label
         self.value = value
         self.type = type
     }
-    
+
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
             Image(systemName: icon)
@@ -47,22 +46,24 @@ struct UserDetailRowView: View {
             Spacer()
         }
     }
-    
+
     private func handleTap() {
         switch type {
         case .phone:
             if let url = URL(string: "tel://\(value.filter { $0.isNumber })"),
-               UIApplication.shared.canOpenURL(url) {
+               UIApplication.shared.canOpenURL(url)
+            {
                 UIApplication.shared.open(url)
             } else {
                 debugPrint("Phone number not valid or not suportable by device")
             }
         case .email:
             if let url = URL(string: "mailto:\(value)"),
-               UIApplication.shared.canOpenURL(url) {
+               UIApplication.shared.canOpenURL(url)
+            {
                 UIApplication.shared.open(url)
             } else {
-                debugPrint( "Email not valid or not suportable by device")
+                debugPrint("Email not valid or not suportable by device")
             }
         case .normal:
             break

@@ -5,9 +5,9 @@
 //  Created by Gaurang Lathiya on 01/06/25.
 //
 
-import SwiftUI
 import CoreModule
 import Kingfisher
+import SwiftUI
 
 struct UserListRowView: View {
     let user: User

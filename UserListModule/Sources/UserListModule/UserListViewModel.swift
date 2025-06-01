@@ -5,10 +5,10 @@
 //  Created by Gaurang Lathiya on 01/06/25.
 //
 
-import SwiftUI
+import Combine
 import CoreModule
 import NetworkModule
-import Combine
+import SwiftUI
 
 enum UserListViewState {
     case idle
@@ -32,9 +32,8 @@ enum UserListViewState {
 
 @Observable
 public class UserListViewModel {
-    
     let userList: UserListProtocol
-    var users: [User] = [] //This is master record
+    var users: [User] = [] // This is master record
     var filteredUsers: [User] = []
     var state: UserListViewState = .idle
     
@@ -47,7 +46,6 @@ public class UserListViewModel {
     // Helpful for Combine implementation
     private var cancellables = Set<AnyCancellable>()
     private let searchTextSubject = CurrentValueSubject<String, Never>("")
-    
     
     public init(userList: UserListProtocol = UserListService(apiClient: APIClient())) {
         self.userList = userList
@@ -72,7 +70,7 @@ public class UserListViewModel {
         do {
             let users = try await userList.fetchUsers()
             self.users = users
-            self.filteredUsers = users
+            filteredUsers = users
             state = .loaded(users)
         } catch {
             state = .error(error)
@@ -86,7 +84,7 @@ public class UserListViewModel {
         }
         filteredUsers = users.filter {
             $0.name.lowercased().contains(query.lowercased()) ||
-            $0.email.lowercased().contains(query.lowercased())
+                $0.email.lowercased().contains(query.lowercased())
         }
     }
 }

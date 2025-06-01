@@ -5,12 +5,11 @@
 //  Created by Gaurang Lathiya on 01/06/25.
 //
 
-import SwiftUI
 import CoreModule
+import SwiftUI
 import UserDetailModule
 
 public struct UserListScreen: View {
-    
     @State var viewModel: UserListViewModel
     
     public init(viewModel: UserListViewModel) {
@@ -32,7 +31,6 @@ public struct UserListScreen: View {
         }
     }
     
-    
     @ViewBuilder
     func getUserListView(withSize size: CGSize) -> some View {
         switch viewModel.state {
@@ -40,21 +38,21 @@ public struct UserListScreen: View {
             ProgressView {
                 Text(AppConstants.loadingText)
             }
-            .frame(width: size.width ,height: size.height)
+            .frame(width: size.width, height: size.height)
         case .error(let error):
             Text("Error: \(error.localizedDescription)")
                 .foregroundStyle(.red)
                 .padding(.horizontal)
-                .frame(width: size.width ,height: size.height)
+                .frame(width: size.width, height: size.height)
         case .loaded:
             if viewModel.users.isEmpty {
                 ContentUnavailableView(AppConstants.noUsersFound,
                                        systemImage: "person.2.slash.fill")
-                .frame(width: size.width ,height: size.height)
+                    .frame(width: size.width, height: size.height)
             } else {
                 LazyVStack(spacing: 12) {
                     ForEach(viewModel.filteredUsers, id: \.id) { user in
-                        NavigationLink(destination: UserDetailScreen(user: user) ) {
+                        NavigationLink(destination: UserDetailScreen(user: user)) {
                             UserListRowView(user: user)
                         }
                     }
@@ -65,7 +63,6 @@ public struct UserListScreen: View {
             EmptyView()
         }
     }
-    
 }
 
 #Preview {

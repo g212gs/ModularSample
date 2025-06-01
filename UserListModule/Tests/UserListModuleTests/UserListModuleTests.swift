@@ -1,12 +1,10 @@
+@testable import CoreModule
 import Testing
 @testable import UserListModule
-@testable import CoreModule
 
 struct UserListModuleTests {
-    
     @Test
-    func testUserListServiceData() async {
-        
+    func userListServiceData() async {
         let apiClient = MockAPIClient()
         let userService = UserListService(apiClient: apiClient)
         do {
@@ -18,12 +16,11 @@ struct UserListModuleTests {
     }
     
     @Test
-    func testFailedUserServiceData() async {
-        
+    func failedUserServiceData() async {
         let apiClient = MockFailureAPIClient()
         let userService = UserListService(apiClient: apiClient)
         do {
-            let _ = try await userService.fetchUsers()
+            _ = try await userService.fetchUsers()
             #expect(Bool(false), "Expected failure but succeeded")
         } catch {
             #expect(true, "Checked for failure correctly")
@@ -32,11 +29,10 @@ struct UserListModuleTests {
     
     @MainActor
     @Test
-    func testUserListViewModel() async {
-        
+    func userListViewModel() async {
         let apiClient = MockAPIClient()
         let userListService = UserListService(apiClient: apiClient)
-        let userListVM: UserListViewModel = UserListViewModel(userList: userListService)
+        let userListVM = UserListViewModel(userList: userListService)
         
         do {
             try await userListVM.fetchUsers()
@@ -45,15 +41,13 @@ struct UserListModuleTests {
         } catch {
             #expect(Bool(false), "Error thrown as we got wrong output")
         }
-        
     }
     
     @MainActor
     @Test
-    func testUserListViewModelEmpty() async {
-        
+    func userListViewModelEmpty() async {
         let userListService = EmptyUserListService()
-        let userListVM: UserListViewModel = UserListViewModel(userList: userListService)
+        let userListVM = UserListViewModel(userList: userListService)
         
         do {
             try await userListVM.fetchUsers()
@@ -62,16 +56,14 @@ struct UserListModuleTests {
         } catch {
             #expect(Bool(false), "Error thrown as we got wrong output")
         }
-        
     }
     
     @MainActor
     @Test
-    func testUserListViewModelFailure() async {
-        
+    func userListViewModelFailure() async {
         let apiClient = MockFailureAPIClient()
         let userListService = UserListService(apiClient: apiClient)
-        let userListVM: UserListViewModel = UserListViewModel(userList: userListService)
+        let userListVM = UserListViewModel(userList: userListService)
         
         do {
             try await userListVM.fetchUsers()
@@ -80,15 +72,14 @@ struct UserListModuleTests {
         } catch {
             #expect(Bool(false), "Error thrown as we got wrong output")
         }
-        
     }
     
     @MainActor
     @Test
-    func testSearchFunctionality() async {
+    func searchFunctionality() async {
         let apiClient = MockAPIClient()
         let userListService = UserListService(apiClient: apiClient)
-        let userListVM: UserListViewModel = UserListViewModel(userList: userListService)
+        let userListVM = UserListViewModel(userList: userListService)
         
         do {
             try await userListVM.fetchUsers()
@@ -101,10 +92,10 @@ struct UserListModuleTests {
     
     @MainActor
     @Test
-    func testEmptySearchFunctionality() async {
+    func emptySearchFunctionality() async {
         let apiClient = MockAPIClient()
         let userListService = UserListService(apiClient: apiClient)
-        let userListVM: UserListViewModel = UserListViewModel(userList: userListService)
+        let userListVM = UserListViewModel(userList: userListService)
         
         do {
             try await userListVM.fetchUsers()

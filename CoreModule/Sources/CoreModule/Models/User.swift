@@ -5,7 +5,6 @@
 //  Created by Gaurang Lathiya on 01/06/25.
 //
 
-
 import Foundation
 
 public struct User: Codable, Identifiable, Sendable {
@@ -46,16 +45,16 @@ public struct User: Codable, Identifiable, Sendable {
         self.phone = phone
         self.photo = photo
     }
-    
-    public static let preview: User = User(id: 1,
-                                   name: "Therese Stiedemann",
-                                   company: "Bailey - Turcotte",
-                                   username: "Hector30",
-                                   email: "Carleton6@hotmail.com",
-                                   address: "86481 Olson Flat",
-                                   zip: "71329-5878",
-                                   state: "Wisconsin",
-                                   country: "South Georgia and the South Sandwich Islands",
-                                   phone: "(416) 516-0195 x4857",
-                                   photo: "https://json-server.dev/ai-profiles/74.png")
+
+    public static let preview: User = .init(id: 1,
+                                            name: "Therese Stiedemann",
+                                            company: "Bailey - Turcotte",
+                                            username: "Hector30",
+                                            email: "Carleton6@hotmail.com",
+                                            address: "86481 Olson Flat",
+                                            zip: "71329-5878",
+                                            state: "Wisconsin",
+                                            country: "South Georgia and the South Sandwich Islands",
+                                            phone: "(416) 516-0195 x4857",
+                                            photo: "https://json-server.dev/ai-profiles/74.png")
 }

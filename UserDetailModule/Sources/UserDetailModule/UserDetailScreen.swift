@@ -5,12 +5,11 @@
 //  Created by Gaurang Lathiya on 01/06/25.
 //
 
-import SwiftUI
 import CoreModule
 import Kingfisher
+import SwiftUI
 
 public struct UserDetailScreen: View {
-    
     public let user: User
     
     public init(user: User) {

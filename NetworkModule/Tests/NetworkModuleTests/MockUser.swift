@@ -16,4 +16,3 @@ struct MockUserInvalidData: Codable, Equatable {
     let id: String
     let age: Int
 }
-

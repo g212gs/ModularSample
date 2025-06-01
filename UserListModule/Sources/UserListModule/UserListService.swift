@@ -5,8 +5,8 @@
 //  Created by Gaurang Lathiya on 01/06/25.
 //
 
-import Foundation
 import CoreModule
+import Foundation
 import NetworkModule
 
 public protocol UserListProtocol: Sendable {
@@ -14,7 +14,6 @@ public protocol UserListProtocol: Sendable {
 }
 
 public struct UserListService: UserListProtocol {
-    
     let apiClient: APIClientProtocol
     
     public init(apiClient: APIClientProtocol) {
@@ -34,5 +33,4 @@ public struct UserListService: UserListProtocol {
         
         return try await apiClient.request(urlRequest)
     }
-        
 }

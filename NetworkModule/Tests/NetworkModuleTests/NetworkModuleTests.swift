@@ -1,13 +1,11 @@
-import Testing
 import Foundation
 @testable import NetworkModule
+import Testing
 
 struct NetworkModuleTests {
-    
     @Test
-    func testSuccessCase() async {
-        
-        let url: String = "https://fake-json-api.mock.beeceptor.com/users"
+    func successCase() async {
+        let url = "https://fake-json-api.mock.beeceptor.com/users"
         let urlRequest = URLRequest(url: URL(string: url)!)
         
         let apiClient = APIClient()
@@ -21,9 +19,8 @@ struct NetworkModuleTests {
     }
     
     @Test
-    func testWrongURL() async {
-        
-        let url: String = "https://jsonplaceholder.typicode"
+    func wrongURL() async {
+        let url = "https://jsonplaceholder.typicode"
         let urlRequest = URLRequest(url: URL(string: url)!)
         
         let apiClient = APIClient()
@@ -37,9 +34,8 @@ struct NetworkModuleTests {
     }
     
     @Test
-    func testWrongResponseModel() async {
-        
-        let url: String = "https://fake-json-api.mock.beeceptor.com/users"
+    func wrongResponseModel() async {
+        let url = "https://fake-json-api.mock.beeceptor.com/users"
         let urlRequest = URLRequest(url: URL(string: url)!)
         
         let apiClient = APIClient()
@@ -51,6 +47,4 @@ struct NetworkModuleTests {
             #expect(true, "Error thrown as we expect invalid model data")
         }
     }
-    
-    
 }
