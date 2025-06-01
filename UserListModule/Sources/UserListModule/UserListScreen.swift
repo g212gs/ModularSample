@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreModule
 import UserDetailModule
 
 public struct UserListScreen: View {
@@ -37,7 +38,7 @@ public struct UserListScreen: View {
         switch viewModel.state {
         case .loading:
             ProgressView {
-                Text( "Loading..." )
+                Text(AppConstants.loadingText)
             }
             .frame(width: size.width ,height: size.height)
         case .error(let error):
@@ -47,17 +48,18 @@ public struct UserListScreen: View {
                 .frame(width: size.width ,height: size.height)
         case .loaded:
             if viewModel.users.isEmpty {
-                ContentUnavailableView("No users found",
+                ContentUnavailableView(AppConstants.noUsersFound,
                                        systemImage: "person.2.slash.fill")
                 .frame(width: size.width ,height: size.height)
             } else {
                 LazyVStack(spacing: 12) {
-                    ForEach(viewModel.users, id: \.id) { user in
+                    ForEach(viewModel.filteredUsers, id: \.id) { user in
                         NavigationLink(destination: UserDetailScreen(user: user) ) {
                             UserListRowView(user: user)
                         }
                     }
                 }
+                .searchable(text: $viewModel.searchText, prompt: Text(AppConstants.placeholderSearchUsers))
             }
         case .idle:
             EmptyView()

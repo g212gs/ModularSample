@@ -8,6 +8,7 @@
 import SwiftUI
 import CoreModule
 import NetworkModule
+import Combine
 
 enum UserListViewState {
     case idle
@@ -33,11 +34,31 @@ enum UserListViewState {
 public class UserListViewModel {
     
     let userList: UserListProtocol
-    var users: [User] = []
+    var users: [User] = [] //This is master record
+    var filteredUsers: [User] = []
     var state: UserListViewState = .idle
+    
+    var searchText: String = "" {
+        didSet {
+            searchTextSubject.send(searchText)
+        }
+    }
+    
+    // Helpful for Combine implementation
+    private var cancellables = Set<AnyCancellable>()
+    private let searchTextSubject = CurrentValueSubject<String, Never>("")
+    
     
     public init(userList: UserListProtocol = UserListService(apiClient: APIClient())) {
         self.userList = userList
+        
+        searchTextSubject
+            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
+            .removeDuplicates()
+            .sink { [weak self] query in
+                self?.filterUsers(by: query)
+            }
+            .store(in: &cancellables)
     }
     
     @MainActor
@@ -51,9 +72,21 @@ public class UserListViewModel {
         do {
             let users = try await userList.fetchUsers()
             self.users = users
+            self.filteredUsers = users
             state = .loaded(users)
         } catch {
             state = .error(error)
+        }
+    }
+    
+    func filterUsers(by query: String) {
+        guard !query.isEmpty else {
+            filteredUsers = users
+            return
+        }
+        filteredUsers = users.filter {
+            $0.name.lowercased().contains(query.lowercased()) ||
+            $0.email.lowercased().contains(query.lowercased())
         }
     }
 }

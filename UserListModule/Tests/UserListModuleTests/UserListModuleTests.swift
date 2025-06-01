@@ -82,4 +82,36 @@ struct UserListModuleTests {
         }
         
     }
+    
+    @MainActor
+    @Test
+    func testSearchFunctionality() async {
+        let apiClient = MockAPIClient()
+        let userListService = UserListService(apiClient: apiClient)
+        let userListVM: UserListViewModel = UserListViewModel(userList: userListService)
+        
+        do {
+            try await userListVM.fetchUsers()
+            userListVM.filterUsers(by: "The")
+            #expect(userListVM.filteredUsers.count == 10, "It should give return 10 users")
+        } catch {
+            #expect(Bool(false), "Error thrown as we got wrong output")
+        }
+    }
+    
+    @MainActor
+    @Test
+    func testEmptySearchFunctionality() async {
+        let apiClient = MockAPIClient()
+        let userListService = UserListService(apiClient: apiClient)
+        let userListVM: UserListViewModel = UserListViewModel(userList: userListService)
+        
+        do {
+            try await userListVM.fetchUsers()
+            userListVM.filterUsers(by: "")
+            #expect(userListVM.filteredUsers.count == 10, "It should give return 10 users")
+        } catch {
+            #expect(Bool(false), "Error thrown as we got wrong output")
+        }
+    }
 }
